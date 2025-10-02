@@ -50,14 +50,17 @@ jobs:
           script: |
             import { getReviewed } from './dist/post-comment.js'
 
-            const msg= await getReviewed()
+            const main = async () => {
+              const msg= await getReviewed()
 
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: msg
-            });
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: msg
+              });
+            }
+            main()
 
       - name: Clean up
         if: always()
