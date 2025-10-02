@@ -18,6 +18,13 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const comments = [
+              "👋 Thanks for opening this PR!",
+              "🚀 The team will review it soon.",
+              "✅ Make sure you've followed the contribution guidelines.",
+              "🔔 Stay tuned for feedback!"
+            ];
+            
             github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
