@@ -39,16 +39,13 @@ jobs:
             const { getReviewed } = require('./dist/post-comment.js')
 
             const main = async () => {
-              const msg= await getReviewed()
+              const { data:msg }= await getReviewed()
 
-
-              console.log(msg)
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                body: "tset msg"
+                body: msg
               });
             }
             main()
-
