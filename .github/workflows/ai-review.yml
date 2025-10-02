@@ -30,12 +30,10 @@ jobs:
           
       - name: Install dependencies
         run: |
-          cd .github/scripts
-          npm init -y
-          npm install @google/genai dotenv
-          
+          npm install 
+
       - name: Run Gemini AI Review
-        run: node .github/scripts/gemini-review.js
+        run: npm run review
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PR_TITLE: ${{ github.event.pull_request.title }}
@@ -46,7 +44,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            import {getReviewed} from './.github/scripts/post-comment.js'
+            import { getReviewed } from './dist/post-comment.js'
 
             const msg= await getReviewed()
 
@@ -56,7 +54,6 @@ jobs:
               issue_number: context.issue.number,
               body: msg
             });
-        run: node .github/scripts/post-comment.js
         
       - name: Clean up
         if: always()
