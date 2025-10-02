@@ -1,27 +1,21 @@
-const fs = require("fs");
-const https = require("https");
-
-const postComment = async () => {
-  try {
-    // Read the review output
-    const review = fs.readFileSync("review_output.md", "utf8");
-
-    // Get environment variables
-    const token = process.env.GITHUB_TOKEN;
-    const owner = process.env.REPO_OWNER;
-    const repo = process.env.REPO_NAME;
-    const prNumber = process.env.PR_NUMBER;
-
-    if (!token || !owner || !repo || !prNumber) {
-      throw new Error("Missing required environment variables");
-    }
-
-    console.log("📤 Posting review comment to PR...");
-    console.log(`   Repository: ${owner}/${repo}`);
-    console.log(`   PR Number: ${prNumber}`);
-
-    // Create comment body with header and footer
-    const commentBody = `## 🤖 Gemini AI Code Review
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getReviewed = void 0;
+require("dotenv/config");
+const promises_1 = require("node:fs/promises");
+const getReviewed = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const review = yield (0, promises_1.readFile)("review_output.md", "utf8");
+        const commentBody = `## 🤖 Gemini AI Code Review
 
 ${review}
 
@@ -37,63 +31,15 @@ ${review}
 - Use the review as a starting point for discussion with your team
 
 </details>`;
-
-    // Prepare API request
-    const data = JSON.stringify({
-      body: commentBody,
-    });
-
-    const options = {
-      hostname: "api.github.com",
-      port: 443,
-      path: `/repos/${owner}/${repo}/issues/${prNumber}/comments`,
-      method: "POST",
-      headers: {
-        Authorization: `token ${token}`,
-        "Content-Type": "application/json",
-        "Content-Length": data.length,
-        "User-Agent": "Gemini-AI-Review-Bot",
-        Accept: "application/vnd.github.v3+json",
-      },
-    };
-
-    // Make the request
-    await new Promise((resolve, reject) => {
-      const req = https.request(options, (res) => {
-        let responseData = "";
-
-        res.on("data", (chunk) => {
-          responseData += chunk;
-        });
-
-        res.on("end", () => {
-          if (res.statusCode >= 200 && res.statusCode < 300) {
-            console.log("✅ Comment posted successfully!");
-            const response = JSON.parse(responseData);
-            console.log(`   Comment URL: ${response.html_url}`);
-            resolve();
-          } else {
-            reject(
-              new Error(
-                `GitHub API returned ${res.statusCode}: ${responseData}`
-              )
-            );
-          }
-        });
-      });
-
-      req.on("error", (error) => {
-        reject(error);
-      });
-
-      req.write(data);
-      req.end();
-    });
-  } catch (error) {
-    console.error("❌ Error posting comment:", error.message);
-    process.exit(1);
-  }
-};
-
-// Run the function
-postComment();
+        return {
+            data: commentBody,
+        };
+    }
+    catch (_e) {
+        const e = _e;
+        console.error("❌ Error posting comment:", e.message);
+        process.exit(1);
+    }
+});
+exports.getReviewed = getReviewed;
+//# sourceMappingURL=post-comment.js.map

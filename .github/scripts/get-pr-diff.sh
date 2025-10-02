@@ -7,14 +7,14 @@ echo "Fetching PR diff..."
 git fetch origin $BASE_REF
 
 # Get the diff between base and current branch
-DIFF=$(git diff origin/$BASE_REF...HEAD)
+DIFF=$(git diff origin/$BASE_REF HEAD)
 
 # Save diff to file
 echo "$DIFF" > pr_diff.txt
 echo "✓ Diff saved to pr_diff.txt"
 
 # Get list of changed files
-CHANGED_FILES=$(git diff --name-only origin/$BASE_REF...HEAD)
+CHANGED_FILES=$(git diff --name-only origin/$BASE_REF HEAD)
 
 # Save changed files to file
 echo "$CHANGED_FILES" > changed_files.txt
