@@ -145,7 +145,7 @@ yarn*
 
 
 # project 
-changed_files.txt
+# changed_files.txt
 test*
 pr_diff.txt
 review_output.md
