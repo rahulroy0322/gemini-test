@@ -1,67 +1,67 @@
-# name: Gemini AI Code Review
+name: Gemini AI Code Review
 
-# on:
-#   pull_request:
-#     types: [opened, synchronize, reopened]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
-# permissions:
-#   pull-requests: write
-#   contents: read
+permissions:
+  pull-requests: write
+  contents: read
 
-# jobs:
-#   gemini-code-review:
-#     runs-on: ubuntu-latest
+jobs:
+  gemini-code-review:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v4
-#         with:
-#           fetch-depth: 0
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-#       - name: Get PR diff
-#         run: bash .github/scripts/get-pr-diff.sh
-#         env:
-#           BASE_REF: ${{ github.base_ref }}
+      - name: Get PR diff
+        run: bash .github/scripts/get-pr-diff.sh
+        env:
+          BASE_REF: ${{ github.base_ref }}
 
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: "18"
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
 
-#       - name: Install dependencies
-#         run: |
-#           npm install
+      - name: Install dependencies
+        run: |
+          npm install
 
-#       - name: Build scripts
-#         run: |
-#           npm run build
+      - name: Build scripts
+        run: |
+          npm run build
 
-#       - name: Run Gemini AI Review
-#         run: npm run review
-#         env:
-#           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-#           PR_TITLE: ${{ github.event.pull_request.title }}
-#           PR_BODY: ${{ github.event.pull_request.body }}
+      - name: Run Gemini AI Review
+        run: npm run review
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
 
-#       - name: Post review comment
-#         uses: actions/github-script@v7
-#         with:
-#           github-token: ${{ secrets.GITHUB_TOKEN }}
-#           script: |
-#             const { getReviewed } = require('./dist/post-comment.js')
+      - name: Post review comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { getReviewed } = require('./dist/post-comment.js')
 
-#             const main = async () => {
-#               const msg= await getReviewed()
+            const main = async () => {
+              const { data:msg } = await getReviewed()
 
-#               await github.rest.issues.createComment({
-#                 owner: context.repo.owner,
-#                 repo: context.repo.repo,
-#                 issue_number: context.issue.number,
-#                 body: msg
-#               });
-#             }
-#             main()
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: msg
+              });
+            }
+            main()
 
-#       - name: Clean up
-#         if: always()
-#         run: bash .github/scripts/cleanup.sh
+      - name: Clean up
+        if: always()
+        run: bash .github/scripts/cleanup.sh

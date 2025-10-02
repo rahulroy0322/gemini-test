@@ -86,7 +86,12 @@ Please provide a comprehensive code review covering these areas:
 - Provide code examples for your suggestions when helpful
 - Use a constructive and helpful tone
 
-Format your response in clear markdown with sections and bullet points.`;
+Format your response in clear markdown with sections and bullet points.
+
+Note:
+  Don't add extra things,any unncesory content.
+  It should be rendered properly in github pr message.
+`;
 
     // Generate review using Gemini
     const result = await ai.models.generateContent({
