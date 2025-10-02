@@ -34,7 +34,7 @@ jobs:
 
       - name: Build scripts
         run: |
-          npm build
+          npm run build
 
       - name: Run Gemini AI Review
         run: npm run review
