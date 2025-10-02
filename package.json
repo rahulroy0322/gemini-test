@@ -1,0 +1,26 @@
+{
+  "name": "xx",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsx --watch src/main.ts",
+    "formate": "prettier ./{src,tests}/**/* --check",
+    "formate:fix": "prettier ./{src,tests}/**/* -w",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint --fix ./src",
+    "start": "node dist/main.js",
+    "review": "node dist/gemini-review.js",
+    "review:watch": "tsx --watch dist/gemini-review.js",
+    "post": "node dist/post-comment.js",
+    "post:watch": "tsx --watch dist/post-comment.js"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.1",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@google/genai": "^1.21.0",
+    "dotenv": "^17.2.3"
+  }
+}
