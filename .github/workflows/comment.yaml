@@ -24,6 +24,15 @@ jobs:
               "✅ Make sure you've followed the contribution guidelines.",
               "🔔 Stay tuned for feedback!"
             ];
+
+            for(const i of comments){
+              github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body:    i
+              });  
+            }
             
             github.rest.issues.createComment({
               owner: context.repo.owner,
