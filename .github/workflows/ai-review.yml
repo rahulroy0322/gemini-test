@@ -31,6 +31,10 @@ jobs:
       - name: Install dependencies
         run: |
           npm install 
+          
+      - name: Install dependencies
+        run: |
+          npm build 
 
       - name: Run Gemini AI Review
         run: npm run review
