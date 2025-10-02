@@ -11,30 +11,30 @@ permissions:
 jobs:
   gemini-code-review:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
+
       - name: Get PR diff
         run: bash .github/scripts/get-pr-diff.sh
         env:
           BASE_REF: ${{ github.base_ref }}
-          
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          
+          node-version: "18"
+
       - name: Install dependencies
         run: |
-          npm install 
-          
-      - name: Install dependencies
+          npm install
+
+      - name: Build scripts
         run: |
-          npm build 
+          npm build
 
       - name: Run Gemini AI Review
         run: npm run review
@@ -42,7 +42,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_BODY: ${{ github.event.pull_request.body }}
-        
+
       - name: Post review comment
         uses: actions/github-script@v7
         with:
@@ -58,7 +58,7 @@ jobs:
               issue_number: context.issue.number,
               body: msg
             });
-        
+
       - name: Clean up
         if: always()
         run: bash .github/scripts/cleanup.sh
