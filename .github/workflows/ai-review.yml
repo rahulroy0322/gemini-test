@@ -48,7 +48,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            import { getReviewed } from './dist/post-comment.js'
+            const { getReviewed } = require('./dist/post-comment.js')
 
             const main = async () => {
               const msg= await getReviewed()
